@@ -11,7 +11,7 @@ const form = document.getElementById('form');
 
   const passwordValidate = (pass) => {
     //Check the password   
-    if (!pass.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/)) { 
+    if (!pass.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,12}$/)) { 
           if (pass.length > 12) {
               return "Password is too lengthy maximum of 12 characters";
           } else if (pass.length < 8) {
@@ -59,31 +59,40 @@ const form = document.getElementById('form');
           if (!field.checkValidity()) {
             //Add thje invalid class to the field that failed it's validation
             field.classList.add('is-invalid');
-
             //Update the text content of the next sibling(ERROR DIV)
             const errorDiv = field.nextElementSibling;
-            const passResult = passwordValidate(document.getElementById('password').value);
-            console.log(passResult)
+            
             if (field.validity.valueMissing) {
               errorDiv.textContent = 'This field is required.';
             } else if (field.type === 'email' && field.validity.typeMismatch) {
               errorDiv.textContent = 'Please enter a valid email address.';
             } else if (field.type === 'text' && field.validity.tooShort) {
               errorDiv.textContent = 'Username must be longer than 3 characters.';
-            } else if (field.type === 'text' && field.validity.tooLong) {
-              errorDiv.textContent = 'Username must be shorter than 20 characters.';
-            } else if (field.type === 'text' && field.validity.patternMismatch) {
-              errorDiv.textContent = 'Username must contain a symbol and a number.';
-            }else if (field.type === 'password' && passResult) {
-              errorDiv.textContent = passResult;
-             console.log(`${passResult} 2`);
-            }    
-          } else if (!field.type === 'submit'){
-            // Set field state to valid
-            field.classList.remove('is-invalid');
-            field.classList.add('is-valid');
-            const errorDiv = field.nextElementSibling;
-            errorDiv.textContent = 'Looks Good';
+            }else if (field.type === 'password'){
+              const passResult = passwordValidate(document.getElementById('password').value);
+             if (passResult){
+                errorDiv.textContent = passResult;
+              }else {
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
+                errorDiv.textContent = 'Looks Good';
+                errorDiv.classList.remove('invalid-feedback');
+                errorDiv.classList.add('valid-feedback');
+                console.log(passResult);
+                console.log(field.validity.valueMissing);
+              }
+            }
+          } else {
+            if (field.type !== 'submit') {
+              // Set field state to valid
+              field.classList.remove('is-invalid');
+              field.classList.add('is-valid');
+              const errorDiv = field.nextElementSibling;
+              errorDiv.textContent = 'Looks Good';
+              errorDiv.classList.remove('invalid-feedback');
+              errorDiv.classList.add('valid-feedback');
+              
+            }
           }
         });
       }

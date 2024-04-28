@@ -12,7 +12,10 @@ const form = document.getElementById('form');
   const passwordValidate = (pass) => {
     //Check the password   
     if (!pass.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,12}$/)) { 
-          if (pass.length > 12) {
+          if (pass === "") {
+            return "This field is required";
+          }
+          else if (pass.length > 12) {
               return "Password is too lengthy maximum of 12 characters";
           } else if (pass.length < 8) {
               return "Password is too short minimum of 8 characters"; 
@@ -68,22 +71,26 @@ const form = document.getElementById('form');
               errorDiv.textContent = 'Please enter a valid email address.';
             } else if (field.type === 'text' && field.validity.tooShort) {
               errorDiv.textContent = 'Username must be longer than 3 characters.';
-            }else if (field.type === 'password'){
-              const passResult = passwordValidate(document.getElementById('password').value);
-             if (passResult){
-                errorDiv.textContent = passResult;
-              }else {
-                field.classList.remove('is-invalid');
-                field.classList.add('is-valid');
-                errorDiv.textContent = 'Looks Good';
-                errorDiv.classList.remove('invalid-feedback');
-                errorDiv.classList.add('valid-feedback');
-                console.log(passResult);
-                console.log(field.validity.valueMissing);
-              }
+            }
+          }else if (field.type === 'password'){
+            const passResult = passwordValidate(document.getElementById('password').value);
+            const errorDiv = field.nextElementSibling;
+           if (passResult){
+            field.classList.add('is-invalid');
+            errorDiv.classList.add('invalid-feedback')
+            //Update the text content of the next sibling(ERROR DIV)
+            errorDiv.textContent = passResult;
+            }else {
+              field.classList.remove('is-invalid');
+              field.classList.add('is-valid');
+              errorDiv.textContent = 'Looks Good';
+              errorDiv.classList.remove('invalid-feedback');
+              errorDiv.classList.add('valid-feedback');
+              console.log(passResult);
+              console.log(field.validity.valueMissing);
             }
           } else {
-            if (field.type !== 'submit') {
+            if (field.type !== 'submit' || 'password') {
               // Set field state to valid
               field.classList.remove('is-invalid');
               field.classList.add('is-valid');
@@ -101,34 +108,36 @@ const form = document.getElementById('form');
   });
 })();
 
-/////////////////////////////////////////
-//() => {
-//     arrUsers = JSON.parse(localStorage.getItem('Users')) || [];
 
-//    let user = {
-//         name: elUsername.value,
-//         email: elEmail.value,
-//         password: elPassword.value
-//     }
+
+const addUser = () => {
+  arrUsers = JSON.parse(localStorage.getItem('Users')) || [];
+
+   let user = {
+        name: elUsername.value,
+        email: elEmail.value,
+        password: elPassword.value
+    }
     
-//     userExists(arrUsers,user);
-//     userValidate(user);
+    userExists(arrUsers,user);
+    userValidate(user);
 
-//     arrUsers.push(user);
-//     localStorage.setItem('Users', JSON.stringify(arrUsers));
-//     }
-// )
+    arrUsers.push(user);
+    localStorage.setItem('Users', JSON.stringify(arrUsers));
+    }
+)
 
-// const userExists = (Users, newUser) =>{
-//     if (Users.length !== 0) {
-//         Users.forEach(user => {
-//             if (user.email === newUser.email){
-//                 return true
-//             }else {
-//                 return false;
-//             }
-//         });
-//     }else{
-//         return false;
-//     }
-// };
+const userExists = (Users, newUser) =>{
+    if (Users.length !== 0) {
+        Users.forEach(user => {
+            if (user.email === newUser.email){
+                return true
+            }else {
+                return false;
+            }
+        });
+    }else{
+        return false;
+    }
+};
+}

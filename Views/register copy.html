@@ -32,7 +32,6 @@
     </div>
   </nav>
 
-
   <section class="v-100 gradient-custom">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
@@ -47,20 +46,20 @@
 
                 <form id="form" class="row requires-validation row g-3" novalidate>
                   <div data-mdb-input-init class="form-outline form-white mb-4 form-group">
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label">Email*</label>
                       <input type="email" class="form-control form-control-lg" id="email" required>                     
                       <div class="invalid-feedback"></div>            
                   </div>
 
                   <div data-mdb-input-init class="form-outline form-white mb-4 form-group">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label">Username*</label>
                       <input type="text" class="form-control form-control-lg" id="username" minlength="3" maxlength="20" required>                     
                       <div class="invalid-feedback"></div>             
                   </div>
 
                   <div data-mdb-input-init class="form-outline form-white mb-4 form-group">
-                    <label for="password" class="form-label is-valid">Password</label>
-                      <input type="password" class="form-control form-control-lg" id="password" pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,12}$/" required>                     
+                    <label for="password" class="form-label">Password*</label>
+                      <input type="password" class="form-control form-control-lg" id="password">                     
                       <div class="invalid-feedback"></div>             
                   </div>
             

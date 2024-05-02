@@ -1,16 +1,14 @@
 const elUsername = document.getElementById('username');
-const elEmail = document.getElementById('validationEmail');
+const elEmail = document.getElementById('email');
 const elPassword = document.getElementById('password');
 const btnRegister = document.getElementById('btnRegister');
 const form = document.getElementById('form');
-
-
 
 //Immediately Invoked Function Expression (IIFE):  The function is immediately executed once the JavaScript file is loaded.
 (function () {
   // 'use strict'; is a directive that enforces stricter parsing and error handling in JavaScript. It helps to catch common coding mistakes and improves overall code quality.
   'use strict';
-
+  
   const passwordValidate = (pass) => {
     //Check the password   
     if (!pass.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,12}$/)) { 
@@ -52,13 +50,17 @@ const form = document.getElementById('form');
     //Inside the function, each form element is represented by the parameter form, which you can use to access properties and methods of that form.
   Array.from(forms).forEach(function (form) {
     form.addEventListener('submit', function (event) {
+
+      //event.preventDefault(): This method prevents the default behavior of an event. In this case, it prevents the default behavior of the form submission. If the form is not valid 
+      event.preventDefault();
+      //event.stopPropagation(): This method stops the propagation of the current event in the capturing and bubbling phases. It's commonly used to prevent the event from reaching other elements or event handlers. In this context, it ensures that the event doesn't propagate further up the DOM tree, potentially triggering other event handlers or behaviors associated with ancestor elements.
+      event.stopPropagation();
+
+
       let allFieldsValid =  true;
       //form.checkValidity(): This is a method available on HTML form elements. It checks the validity of the form according to its constraints, such as required fields, min and max values, and pattern matching. It returns true if the form is valid and false if it's not.
       if (!form.checkValidity()) {
-        //event.preventDefault(): This method prevents the default behavior of an event. In this case, it prevents the default behavior of the form submission. If the form is not valid 
-        event.preventDefault();
-        //event.stopPropagation(): This method stops the propagation of the current event in the capturing and bubbling phases. It's commonly used to prevent the event from reaching other elements or event handlers. In this context, it ensures that the event doesn't propagate further up the DOM tree, potentially triggering other event handlers or behaviors associated with ancestor elements.
-        event.stopPropagation();
+
         // Loop through each field/element in the form to check validity
         Array.from(form.elements).forEach(function (field) {
           if (field.type === 'password'){
@@ -80,10 +82,12 @@ const form = document.getElementById('form');
               console.log('password valid')
             }
           }else if (!field.checkValidity()) {
-            //Add thje invalid class to the field that failed it's validation
+            //Add thje invalid class to the field that failed it's validation  
             field.classList.add('is-invalid');
             //Update the text content of the next sibling(ERROR DIV)
             const errorDiv = field.nextElementSibling;
+            errorDiv.classList.remove('valid-feedback');
+            errorDiv.classList.add('invalid-feedback');
             allFieldsValid =  false;
             if (field.validity.valueMissing) {
               errorDiv.textContent = 'This field is required.';
@@ -105,11 +109,13 @@ const form = document.getElementById('form');
             }
           }
         });
-        console.log(allFieldsValid)
-        if (allFieldsValid) {
-          event.preventDefault(); // Prevent default form submission
-          addUser();
-        }
+      }
+      console.log(allFieldsValid)
+      if (allFieldsValid) {
+        event.preventDefault(); // Prevent default form submission
+        if (addUser()) {
+          window.location.href = "/Views/dashboard.html";
+        };
       }
       form.classList.add('was-validated');
     }, false);
@@ -118,50 +124,46 @@ const form = document.getElementById('form');
 
 
 
-const addUser = () => {
+function addUser() {
   let arrUsers = JSON.parse(localStorage.getItem('users')) || [];
+  arrUsers.forEach(user => {
+    console.log('This is a user: ' + user.name, user.email, user.password);
+  });
+
   let valState = false;
   let newUser = {
-        name: elUsername.value,
-        email: elEmail.value,
-        password: elPassword.value
-  }
-
-    if (arrUsers.length !== 0) {
-        arrUsers.forEach(user => {
-            if (user.email === newUser.email){
-              valState = true;
-            }else { 
-              valState = false;
-              arrUsers.push(newUser);
-              localStorage.setItem('users', JSON.stringify(arrUsers));
-            }
-        });
-      }else{
-        valState = false;
-        arrUsers.push(newUser);
-        localStorage.setItem('users', JSON.stringify(arrUsers));
-      }
-
-      if (valState === true){
-        btnRegister.nextElementSibling.classList.remove('hidden');
-      }else {
-        btnRegister.nextElementSibling.classList.add('hidden');
-      }
+    name: elUsername.value,
+    email: elEmail.value,
+    password: elPassword.value
   };
 
+  console.log('length of array before check: ' + arrUsers.length);
+  if (arrUsers.length !== 0) {
+    arrUsers.forEach(user => {
+      if (user.email !== newUser.email && valState === false) {
+        valState = false;
+      } else {
+        valState = true;
+      }
+    });
+  } else {
+    valState = false;
+  }
 
-  //Testing Local Storage
-  btnRegister.addEventListener('click', () => {
-    let arrUsers = JSON.parse(localStorage.getItem('users')) || [];
-    let newUser = {
-      name: 'jan',
-      email: 'jan@email',
-      password: 'testValue123'
-}
+  console.log('length of array after check: ' + arrUsers.length);
+
+  if (valState) {
+    btnRegister.nextElementSibling.classList.remove('hidden');
+    console.log(arrUsers);
+    return false;
+  } else {
+    btnRegister.nextElementSibling.classList.add('hidden');
+    console.log(arrUsers);
     arrUsers.push(newUser);
     localStorage.setItem('users', JSON.stringify(arrUsers));
-    localStorage.setItem('testKey', 'testValue');
-    let testValue = localStorage.getItem('testKey');
-    console.log(testValue); // Should output "testValue"
-  })
+    return true;
+
+  }
+}
+
+

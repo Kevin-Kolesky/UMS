@@ -47,25 +47,29 @@
                 <form id="form" class="row requires-validation row g-3" novalidate>
                   <div data-mdb-input-init class="form-outline form-white mb-4 form-group">
                     <label for="email" class="form-label">Email*</label>
-                      <input type="email" class="form-control form-control-lg" id="email" required>                     
+                      <input value="a@a"
+                       type="email" class="form-control form-control-lg" id="email" required>                     
                       <div class="invalid-feedback"></div>            
                   </div>
 
                   <div data-mdb-input-init class="form-outline form-white mb-4 form-group">
                     <label for="username" class="form-label">Username*</label>
-                      <input type="text" class="form-control form-control-lg" id="username" minlength="3" maxlength="20" required>                     
+                      <input value="Test"
+                       type="text" class="form-control form-control-lg" id="username" minlength="3" maxlength="20" required>                     
                       <div class="invalid-feedback"></div>             
                   </div>
 
                   <div data-mdb-input-init class="form-outline form-white mb-4 form-group">
                     <label for="password" class="form-label">Password*</label>
-                      <input type="password" class="form-control form-control-lg" id="password">      
+                      <input value="Test@123"
+                       type="password" class="form-control form-control-lg" id="password" minlength="8" maxlength="12" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,12}">      
                       <!--pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,12}"-->               
                       <div class="invalid-feedback"></div>             
                   </div>
             
                   <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5"
                     type="submit" id="btnRegister">Register</button>
+                    <div class="redVal hidden">User already exists, sign in instead?</div>    
             </form>
            
               <div>

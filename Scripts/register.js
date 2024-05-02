@@ -54,42 +54,19 @@ const form = document.getElementById('form');
     form.addEventListener('submit', function (event) {
       let allFieldsValid =  true;
       //form.checkValidity(): This is a method available on HTML form elements. It checks the validity of the form according to its constraints, such as required fields, min and max values, and pattern matching. It returns true if the form is valid and false if it's not.
-      if (!form.checkValidity()) {  
+      if (!form.checkValidity()) {
         //event.preventDefault(): This method prevents the default behavior of an event. In this case, it prevents the default behavior of the form submission. If the form is not valid 
         event.preventDefault();
         //event.stopPropagation(): This method stops the propagation of the current event in the capturing and bubbling phases. It's commonly used to prevent the event from reaching other elements or event handlers. In this context, it ensures that the event doesn't propagate further up the DOM tree, potentially triggering other event handlers or behaviors associated with ancestor elements.
         event.stopPropagation();
         // Loop through each field/element in the form to check validity
         Array.from(form.elements).forEach(function (field) {
-          const errorDiv = field.nextElementSibling;
-          if (!field.checkValidity()) {
-            //Add thje invalid class to the field that failed it's validation
-            field.classList.add('is-invalid');
-            //Update the text content of the next sibling(ERROR DIV)          
-            if (field.validity.valueMissing) {
-              errorDiv.textContent = 'This field is required.';
-            } else if (field.type === 'email' && field.validity.typeMismatch) {
-              errorDiv.textContent = 'Please enter a valid email address.';
-            } else if (field.type === 'text' && field.validity.tooShort) {
-              errorDiv.textContent = 'Username must be longer than 3 characters.';
-            }
-            allFieldsValid =  false;
-          } else if (field.checkValidity() && field.type !== 'submit' && field.type !== 'password'){
-            // Set field state to valid
-            field.classList.remove('is-invalid');
-            field.classList.add('is-valid');
-
-            errorDiv.textContent = 'Looks Good';
-            errorDiv.classList.remove('invalid-feedback');
-            errorDiv.classList.add('valid-feedback');
-            console.log(' this should only be logged if a field is valid');
-        }
-          
           if (field.type === 'password'){
-            const passResult = passwordValidate(field.value);
+            const passResult = passwordValidate(document.getElementById('password').value);
+            const errorDiv = field.nextElementSibling;
            if (passResult){
-           field.classList.add('is-invalid');
-            errorDiv.classList.add('invalid-feedback');
+            field.classList.add('is-invalid');
+            errorDiv.classList.add('invalid-feedback')
             //Update the text content of the next sibling(ERROR DIV)
             errorDiv.textContent = passResult;
             console.log('Password is NOT valid');
@@ -97,18 +74,43 @@ const form = document.getElementById('form');
             }else {
               field.classList.remove('is-invalid');
               field.classList.add('is-valid');
+              errorDiv.textContent = 'Looks Good';
               errorDiv.classList.remove('invalid-feedback');
               errorDiv.classList.add('valid-feedback');
+              console.log('password valid')
+            }
+          }else if (!field.checkValidity()) {
+            //Add thje invalid class to the field that failed it's validation
+            field.classList.add('is-invalid');
+            //Update the text content of the next sibling(ERROR DIV)
+            const errorDiv = field.nextElementSibling;
+            allFieldsValid =  false;
+            if (field.validity.valueMissing) {
+              errorDiv.textContent = 'This field is required.';
+            } else if (field.type === 'email' && field.validity.typeMismatch) {
+              errorDiv.textContent = 'Please enter a valid email address.';
+            } else if (field.type === 'text' && field.validity.tooShort) {
+              errorDiv.textContent = 'Username must be longer than 3 characters.';
+            }
+          }else{
+            if (field.type !== 'submit' && field.type !== 'password') {
+              // Set field state to valid
+              field.classList.remove('is-invalid');
+              field.classList.add('is-valid');
+              const errorDiv = field.nextElementSibling;
               errorDiv.textContent = 'Looks Good';
-              console.log('Password is valid');
+              errorDiv.classList.remove('invalid-feedback');
+              errorDiv.classList.add('valid-feedback');
+              
             }
           }
-    });
-
-    if (allFieldsValid) {
-      addUser();
-    }
-  }
+        });
+        console.log(allFieldsValid)
+        if (allFieldsValid) {
+          event.preventDefault(); // Prevent default form submission
+          addUser();
+        }
+      }
       form.classList.add('was-validated');
     }, false);
   });
@@ -117,7 +119,6 @@ const form = document.getElementById('form');
 
 
 const addUser = () => {
-  alert('User add function runnig');
   let arrUsers = JSON.parse(localStorage.getItem('users')) || [];
   let valState = false;
   let newUser = {
@@ -148,6 +149,19 @@ const addUser = () => {
         btnRegister.nextElementSibling.classList.add('hidden');
       }
   };
-    
 
-//btnRegister.addEventListener('click',  addUser());
+
+  //Testing Local Storage
+  btnRegister.addEventListener('click', () => {
+    let arrUsers = JSON.parse(localStorage.getItem('users')) || [];
+    let newUser = {
+      name: 'jan',
+      email: 'jan@email',
+      password: 'testValue123'
+}
+    arrUsers.push(newUser);
+    localStorage.setItem('users', JSON.stringify(arrUsers));
+    localStorage.setItem('testKey', 'testValue');
+    let testValue = localStorage.getItem('testKey');
+    console.log(testValue); // Should output "testValue"
+  })

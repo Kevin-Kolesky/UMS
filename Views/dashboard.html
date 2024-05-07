@@ -51,32 +51,40 @@
 </div>
 
 <!--Edit Modal -->
-<div class="modal fade" name="editModal" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade " name="editModal" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog bg-dark text-white">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title bg-dark text-white" id="ModalLabel">Edit User</h5>
+        <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-      <form>
-        <div class="mb-3">
-          <label for="editName" class="col-form-label">Username:</label>
-          <input type="text" class="form-control" id="editName">
-        </div>
-        <div class="mb-3">
-          <label for="editEmail" class="col-form-label">Email:</label>
-          <input type="text" class="form-control" id="editEmail">
-        </div>
-        <div class="mb-3">
-          <label for="editPass" class="col-form-label">Password:</label>
-          <input type="text" class="form-control" id="editPass">
-        </div>
-      </form>
-    </div>
+      <div class="modal-body bg-dark text-white">
+
+        <form id="form" class="row requires-validation row g-3" novalidate>
+          <div data-mdb-input-init class="form-outline form-white mb-4 form-group">
+            <label for="editName" class="form-label">Username:</label>
+            <input value="Test" type="text" class="form-control form-control-lg" id="editName" id="username" minlength="3" maxlength="20" required>
+            <div class="invalid-feedback"></div>   
+          </div>
+
+          <div data-mdb-input-init class="form-outline form-white mb-4 form-group">
+            <label for="editEmail" class="form-label">Email:</label>
+            <input value="Test@Test" type="email" class="form-control form-control-lg" id="editEmail" required>
+            <div class="invalid-feedback"></div> 
+          </div>
+
+          <div data-mdb-input-init class="form-outline form-white mb-4 form-group">
+            <label for="editPass" class="form-label">Password:</label>
+            <input value="Test@123" type="password" class="form-control form-control-lg" id="editPass" minlength="8" maxlength="12" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,12}"> 
+            <div class="invalid-feedback"></div>   
+          </div>
+
+        </form>
+      </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" id="btnUpdate" class="btn btn-primary">Save changes</button>
+        <button type="button" id="btnUpdate" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Save changes</button>
       </div>
     </div>
   </div>
@@ -97,7 +105,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" id="btnDeleteConfirm" class="btn btn-danger">Delete User</button>
+        <button type="button" id="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger">Delete User</button>
       </div>
     </div>
   </div>

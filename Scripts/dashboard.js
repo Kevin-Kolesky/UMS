@@ -1,5 +1,56 @@
 
 let arrUsers = JSON.parse(localStorage.getItem('users')) || [];
+let INDEX;
+
+//Edit Modal Submit Button
+document.getElementById('btnUpdate').addEventListener('click', function() {
+    updateUser(document.getElementById('editName').value , document.getElementById('editEmail').value, document.getElementById('editPass').value, INDEX);
+});
+
+document.getElementById('btnDelete').addEventListener('click', function() {
+    deleteUser(INDEX);
+});
+
+function updateUser (username, email, password, index){
+    let updatedUser = {
+            name: username,
+            email: email,
+            password: password
+        };
+
+        arrUsers[index] = updatedUser;
+        localStorage.setItem('users', JSON.stringify(arrUsers));
+        displayusers();
+};
+
+function deleteUser (index) {
+    arrUsers.splice(index, 1);
+    localStorage.setItem('users', JSON.stringify(arrUsers));
+    displayusers(); // Update display after deletion
+};
+
+function addEventListeners() {
+    //Edit Buttons
+    document.querySelectorAll('.edit-button').forEach((button, index) => {
+        button.addEventListener('click', function() {
+            let username = arrUsers[index].name;
+            let email = arrUsers[index].email; 
+            let password = arrUsers[index].password;
+
+            document.getElementById('editName').value =  username; 
+            document.getElementById('editEmail').value = email; 
+            document.getElementById('editPass').value =  password;
+            INDEX = index;
+        });
+    });
+
+    //Delete buttons
+    document.querySelectorAll('.delete-button').forEach((button, index) => {
+        button.addEventListener('click', function() {
+            INDEX = index;
+        });
+    });
+}
 
 function displayusers() {
     const table = document.getElementById('tableBody');
@@ -31,52 +82,8 @@ function displayusers() {
       </tr>`
         table.insertAdjacentHTML('beforeend', HTMLString);
     });
-
-    // Attach event listeners for edit and delete buttons
-    document.querySelectorAll('.edit-button').forEach((button, index) => {
-        button.addEventListener('click', function() {
-            let username = arrUsers[index].name;
-            let email = arrUsers[index].email; 
-            let password = arrUsers[index].password;
-
-            document.getElementById('editName').value =  username; 
-            document.getElementById('editEmail').value = email; 
-            document.getElementById('editPass').value =  password;
-
-            document.getElementById('btnUpdate').addEventListener('click', function() {
-                updateUser(document.getElementById('editName').value , document.getElementById('editEmail').value, document.getElementById('editPass').value, index);
-            });
-
-        });
-        
-    });
-
-
-    var editModal = new bootstrap.Modal(document.getElementById('editModal'));
-    
-
-    function updateUser (username, email, password, index){
-       let updatedUser = {
-            name: username,
-            email: email,
-            password: password
-        };
-
-        arrUsers[index] = updatedUser;
-        localStorage.setItem('users', JSON.stringify(arrUsers));
-        displayusers();
-        editModal.hide();
-    }
-
-
-    document.querySelectorAll('.delete-button').forEach((button, index) => {
-        button.addEventListener('click', function() {
-            users.splice(index, 1);
-            localStorage.setItem('users', JSON.stringify(users));
-            displayusers(); // Update display after deletion
-        });
-    });
+    addEventListeners();
 }
 
-// Display users when the page loads
+//Display users when the page loads
 window.addEventListener('load', displayusers);

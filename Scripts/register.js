@@ -127,7 +127,6 @@ const form = document.getElementById('form');
 function addUser() {
   let arrUsers = JSON.parse(localStorage.getItem('users')) || [];
   arrUsers.forEach(user => {
-    console.log('This is a user: ' + user.name, user.email, user.password);
   });
 
   let valState = false;
@@ -137,7 +136,6 @@ function addUser() {
     password: elPassword.value
   };
 
-  console.log('length of array before check: ' + arrUsers.length);
   if (arrUsers.length !== 0) {
     arrUsers.forEach(user => {
       if (user.email !== newUser.email && valState === false) {
@@ -150,19 +148,15 @@ function addUser() {
     valState = false;
   }
 
-  console.log('length of array after check: ' + arrUsers.length);
 
   if (valState) {
     btnRegister.nextElementSibling.classList.remove('hidden');
-    console.log(arrUsers);
     return false;
   } else {
     btnRegister.nextElementSibling.classList.add('hidden');
-    console.log(arrUsers);
     arrUsers.push(newUser);
     localStorage.setItem('users', JSON.stringify(arrUsers));
     return true;
-
   }
 }
 

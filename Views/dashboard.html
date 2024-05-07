@@ -21,14 +21,6 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="dashboard.html">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="login.html">Sign In</a>
-          </li>
-
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="register.html">Register</a>
           </li>
@@ -38,29 +30,85 @@
     </div>
   </nav>
 
-
+<div class="vw-50">
   <table class="table table-hover table-bordered caption-top">
     <caption class="border-bottom border-primary">
       List of users
     </caption>
     <thead>
       <tr class="table-dark border-primary">
-        <th scope="col">#</th>
-        <th scope="col">Username</th>
-        <th scope="col">Email</th>
-        <th scope="col">Password</th>
-        <th>Actions</th>
+        <th scope="col" class="col-1">id</th>
+        <th scope="col" class="col-1">Username</th>
+        <th scope="col" class="col-1">Email</th>
+        <th scope="col" class="col-1">Password</th>
+        <th scope="col"  class="col-1">Actions</th>
       </tr>
     </thead>
 
-    <tbody id="tableBody" class="table-group-divider table-divider-color border border-primary">
+    <tbody table-hover id="tableBody" class="table-group-divider table-divider-color border border-primary">
     </tbody>
   </table>
+</div>
+
+<!--Edit Modal -->
+<div class="modal fade" name="editModal" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label for="editName" class="col-form-label">Username:</label>
+          <input type="text" class="form-control" id="editName">
+        </div>
+        <div class="mb-3">
+          <label for="editEmail" class="col-form-label">Email:</label>
+          <input type="text" class="form-control" id="editEmail">
+        </div>
+        <div class="mb-3">
+          <label for="editPass" class="col-form-label">Password:</label>
+          <input type="text" class="form-control" id="editPass">
+        </div>
+      </form>
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="btnUpdate" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you Sure?
+        <br>
+        You won't be able to revert this!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="btnDeleteConfirm" class="btn btn-danger">Delete User</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <script src="/Scripts/dashboard.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
+
 </body>
 
 </html>

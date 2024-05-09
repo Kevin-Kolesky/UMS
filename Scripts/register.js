@@ -8,46 +8,46 @@ const form = document.getElementById('form');
 (function () {
   // 'use strict'; is a directive that enforces stricter parsing and error handling in JavaScript. It helps to catch common coding mistakes and improves overall code quality.
   'use strict';
-  
+
   const passwordValidate = (pass) => {
     //Check the password   
-    if (!pass.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,12}$/)) { 
-          if (pass === "") {
-            return "This field is required";
-          }
-          else if (pass.length > 12) {
-              return "Password is too lengthy maximum of 12 characters";
-          } else if (pass.length < 8) {
-              return "Password is too short minimum of 8 characters"; 
-            }
+    if (!pass.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,12}$/)) {
+      if (pass === "") {
+        return "This field is required";
+      }
+      else if (pass.length > 12) {
+        return "Password is too lengthy maximum of 12 characters";
+      } else if (pass.length < 8) {
+        return "Password is too short minimum of 8 characters";
+      }
 
-          let hasLowerCase = /[a-z]/.test(pass);
-          let hasUpperCase = /[A-Z]/.test(pass);
-          let hasDigit = /[\d]/.test(pass);
-          let hasSpecialChar = /[!@#$%^&*.?]/.test(pass);
-      
-          if (!hasLowerCase) {
-              return "Password must contain at least one lowercase letter";
-          }
-          if (!hasUpperCase) {
-              return "Password must contain at least one uppercase letter";
-          }
-          if (!hasDigit) {
-              return "Password must contain at least one digit";
-          }
-          if (!hasSpecialChar) {
-              return "Password must contain at least one special character";
-          }  
-        }
-     else {
+      let hasLowerCase = /[a-z]/.test(pass);
+      let hasUpperCase = /[A-Z]/.test(pass);
+      let hasDigit = /[\d]/.test(pass);
+      let hasSpecialChar = /[!@#$%^&*.?]/.test(pass);
+
+      if (!hasLowerCase) {
+        return "Password must contain at least one lowercase letter";
+      }
+      if (!hasUpperCase) {
+        return "Password must contain at least one uppercase letter";
+      }
+      if (!hasDigit) {
+        return "Password must contain at least one digit";
+      }
+      if (!hasSpecialChar) {
+        return "Password must contain at least one special character";
+      }
+    }
+    else {
       return "";
     }
-  } 
+  }
 
   const forms = document.querySelectorAll('.requires-validation');
   //Array.from(forms): This converts the forms collection into a regular-array. 
   //ForEach: It iterates over each form element and attaches an event listener to it.
-    //Inside the function, each form element is represented by the parameter form, which you can use to access properties and methods of that form.
+  //Inside the function, each form element is represented by the parameter form, which you can use to access properties and methods of that form.
   Array.from(forms).forEach(function (form) {
     form.addEventListener('submit', function (event) {
 
@@ -57,23 +57,23 @@ const form = document.getElementById('form');
       event.stopPropagation();
 
 
-      let allFieldsValid =  true;
+      let allFieldsValid = true;
       //form.checkValidity(): This is a method available on HTML form elements. It checks the validity of the form according to its constraints, such as required fields, min and max values, and pattern matching. It returns true if the form is valid and false if it's not.
       if (!form.checkValidity()) {
-
+        
         // Loop through each field/element in the form to check validity
         Array.from(form.elements).forEach(function (field) {
-          if (field.type === 'password'){
+          if (field.type === 'password') {
             const passResult = passwordValidate(document.getElementById('password').value);
             const errorDiv = field.nextElementSibling;
-           if (passResult){
-            field.classList.add('is-invalid');
-            errorDiv.classList.add('invalid-feedback')
-            //Update the text content of the next sibling(ERROR DIV)
-            errorDiv.textContent = passResult;
-            console.log('Password is NOT valid');
-            allFieldsValid =  false;
-            }else {
+            if (passResult) {
+              field.classList.add('is-invalid');
+              errorDiv.classList.add('invalid-feedback')
+              //Update the text content of the next sibling(ERROR DIV)
+              errorDiv.textContent = passResult;
+              console.log('Password is NOT valid');
+              allFieldsValid = false;
+            } else {
               field.classList.remove('is-invalid');
               field.classList.add('is-valid');
               errorDiv.textContent = 'Looks Good';
@@ -81,14 +81,14 @@ const form = document.getElementById('form');
               errorDiv.classList.add('valid-feedback');
               console.log('password valid')
             }
-          }else if (!field.checkValidity()) {
+          } else if (!field.checkValidity()) {
             //Add thje invalid class to the field that failed it's validation  
             field.classList.add('is-invalid');
             //Update the text content of the next sibling(ERROR DIV)
             const errorDiv = field.nextElementSibling;
             errorDiv.classList.remove('valid-feedback');
             errorDiv.classList.add('invalid-feedback');
-            allFieldsValid =  false;
+            allFieldsValid = false;
             if (field.validity.valueMissing) {
               errorDiv.textContent = 'This field is required.';
             } else if (field.type === 'email' && field.validity.typeMismatch) {
@@ -96,7 +96,7 @@ const form = document.getElementById('form');
             } else if (field.type === 'text' && field.validity.tooShort) {
               errorDiv.textContent = 'Username must be longer than 3 characters.';
             }
-          }else{
+          } else {
             if (field.type !== 'submit' && field.type !== 'password') {
               // Set field state to valid
               field.classList.remove('is-invalid');
@@ -105,8 +105,20 @@ const form = document.getElementById('form');
               errorDiv.textContent = 'Looks Good';
               errorDiv.classList.remove('invalid-feedback');
               errorDiv.classList.add('valid-feedback');
-              
+
             }
+          }
+        });
+      } else {
+        Array.from(form.elements).forEach(function (field) {
+          const errorDiv = field.nextElementSibling;
+          if (field.type !== 'submit') {
+            // Set field state to valid
+            field.classList.remove('is-invalid');
+            field.classList.add('is-valid');
+            errorDiv.classList.remove('invalid-feedback');
+            errorDiv.classList.add('valid-feedback');
+            errorDiv.textContent = 'Looks Good';
           }
         });
       }
@@ -126,9 +138,6 @@ const form = document.getElementById('form');
 
 function addUser() {
   let arrUsers = JSON.parse(localStorage.getItem('users')) || [];
-  arrUsers.forEach(user => {
-    console.log('This is a user: ' + user.name, user.email, user.password);
-  });
 
   let valState = false;
   let newUser = {
@@ -137,7 +146,6 @@ function addUser() {
     password: elPassword.value
   };
 
-  console.log('length of array before check: ' + arrUsers.length);
   if (arrUsers.length !== 0) {
     arrUsers.forEach(user => {
       if (user.email !== newUser.email && valState === false) {
@@ -150,19 +158,15 @@ function addUser() {
     valState = false;
   }
 
-  console.log('length of array after check: ' + arrUsers.length);
 
   if (valState) {
     btnRegister.nextElementSibling.classList.remove('hidden');
-    console.log(arrUsers);
     return false;
   } else {
     btnRegister.nextElementSibling.classList.add('hidden');
-    console.log(arrUsers);
     arrUsers.push(newUser);
     localStorage.setItem('users', JSON.stringify(arrUsers));
     return true;
-
   }
 }
 

@@ -11,7 +11,8 @@
 
 </head>
 
-<body class="bg-dark">
+
+<body class="gradient-custom-dash" >
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">UMS</a>
@@ -24,31 +25,32 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="register.html">Register</a>
           </li>
-
         </ul>
       </div>
     </div>
   </nav>
 
-<div class="vw-50">
-  <table class="table table-hover table-bordered caption-top">
-    <caption class="border-bottom border-primary">
+<!-- Table -->
+<div class="container-xxl mt-1">
+  <table class="w-auto table table-responsive text-capitalize table-hover table-bordered table-fixed caption-top">
+    <caption class="border-bottom border-primary text-white">
       List of users
     </caption>
     <thead>
-      <tr class="table-dark border-primary">
+      <tr class="table-responsive text-uppercase table-dark border-primary">
         <th scope="col" class="col-1">id</th>
-        <th scope="col" class="col-1">Username</th>
-        <th scope="col" class="col-1">Email</th>
-        <th scope="col" class="col-1">Password</th>
-        <th scope="col"  class="col-1">Actions</th>
+        <th scope="col" class="col-3">Username</th>
+        <th scope="col" class="col-3">Email</th>
+        <th scope="col" class="col-3">Password</th>
+        <th scope="col"  class="col-2">Actions</th>
       </tr>
     </thead>
-
     <tbody table-hover id="tableBody" class="table-group-divider table-divider-color border border-primary">
     </tbody>
   </table>
 </div>
+
+
 
 <!--Edit Modal -->
 <div class="modal fade " name="editModal" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

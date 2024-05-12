@@ -64,7 +64,7 @@ function displayusers() {
         <td>${user.email}</td>
         <td>${user.password}</td>
         <td>                
-            <button type="button" class=" edit-button btn btn-warning float-start" id="edit${index}" 
+            <button type="button" class=" edit-button btn btn-primary float-start" id="edit${index}" 
             data-bs-toggle="modal" data-bs-target="#editModal">
             <?xml version="1.0" ?>
             <svg class="feather feather-edit" fill="none" height="20" stroke="currentColor" stroke-linecap="round" 

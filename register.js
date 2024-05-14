@@ -126,7 +126,7 @@ const form = document.getElementById('form');
       if (allFieldsValid) {
         event.preventDefault(); // Prevent default form submission
         if (addUser()) {
-          window.location.href = "/Views/dashboard.html";
+          window.location.href = "dashboard.html";
         };
       }
       form.classList.add('was-validated');

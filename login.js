@@ -58,7 +58,7 @@ const form = document.getElementById('form');
                 event.preventDefault(); // Prevent default form submission
                 console.log(checkUser());
                 if (checkUser()) {
-                    window.location.href = "/Views/dashboard.html";
+                    window.location.href = "dashboard.html";
                 };
             }
             form.classList.add('was-validated');

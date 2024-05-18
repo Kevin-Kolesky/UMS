@@ -54,13 +54,7 @@ img {
 
         white-space: normal !important; 
         word-wrap: normal;  
-      }
-
-.table-responsive {
-    min-height: 200px;
-    min-width: 360px;
-    overflow: scroll;
-}
+}        
 
 thead, th{
     top: 0;

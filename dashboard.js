@@ -1,3 +1,24 @@
+var express = require("express");
+var mysql = require("mysql");
+var app = express();
+app.use(express.json);
+
+const con=mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'umsdb'
+})
+
+con.connect((err) => {
+    if (err) {
+        console.log(err);
+    }else{
+        console.log("connected!!")
+    }
+})
+
+
 
 let arrUsers = JSON.parse(localStorage.getItem('users')) || [];
 let INDEX;

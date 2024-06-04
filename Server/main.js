@@ -2,10 +2,20 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 
+const cors = require("cors");
+
+const corsOptions = {
+  origin: "http://127.0.0.1:5500",
+};
+
 const app = express();
+app.use(cors(corsOptions));
 
 const dotenv = require('dotenv');
 dotenv.config();
+
+
+
 
 // Create a MySQL connection
 const db = mysql.createConnection({
@@ -27,9 +37,10 @@ db.connect((err) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
 app.post('/api/post', (req, res) => {
     const {username,password, email } = req.body;
-    const sql = 'INSERT INTO users (username,password, email) VALUES (?,?, ?)';
+    const sql = 'INSERT INTO users (username,password, email) VALUES (?,?,?)';
     db.query(sql, [username,password, email], (err, results) => {
       if (err) {
         return res.status(500).send(err);
@@ -67,9 +78,7 @@ app.get('/api/usersById', (req, res) => {
       console.log(data[0].password);
       console.log(data[0].email);
       res.json(result);
-
     }
-    
   });
 });
 
@@ -92,8 +101,8 @@ app.put('/api/update/:id', (req, res) => {
   });
 });
 
-app.delete('/api/delete/', (req, res) => {
-  const id=req.body.id;
+app.delete('/api/delete/:id', (req, res) => {
+  const id=req.params.id;
   const sql = 'DELETE FROM users WHERE id=?';
   db.query(sql,id,(err, result) => {
     if (err) {

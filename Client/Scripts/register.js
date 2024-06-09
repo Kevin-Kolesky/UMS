@@ -46,7 +46,7 @@ const form = document.getElementById('form');
 
   const forms = document.querySelectorAll('.requires-validation');
   Array.from(forms).forEach(function (form) {
-    form.addEventListener('submit', function (event) {
+    form.addEventListener('submit',async function (event) {
 
       event.preventDefault();
 
@@ -124,7 +124,7 @@ const form = document.getElementById('form');
       }
       if (allFieldsValid) {
         event.preventDefault();
-        if (addUser()) {
+        if (await addUser()) {
           console.log('going to dashboard now')
           window.location.href = "dashboard.html";
         };

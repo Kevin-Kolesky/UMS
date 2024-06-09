@@ -11,7 +11,7 @@ const form = document.getElementById('form');
 
     const forms = document.querySelectorAll('.requires-validation');
     Array.from(forms).forEach(function (form) {
-        form.addEventListener('submit', function (event) {
+        form.addEventListener('submit',async function (event) {
             event.preventDefault();
             event.stopPropagation();
 
@@ -56,8 +56,7 @@ const form = document.getElementById('form');
 
             if (allFieldsValid) {
                 event.preventDefault(); // Prevent default form submission
-                console.log(checkUser());
-                if (checkUser()) {
+                if (await checkUser()) {
                     window.location.href = "dashboard.html";
                 };
             }
@@ -68,16 +67,17 @@ const form = document.getElementById('form');
 
 
 
-function checkUser() {
-    let arrUsers = JSON.parse(localStorage.getItem('users')) || [];
+async function checkUser() {
+
     let userEmail = elEmail.value;
     let userPassword = elPassword.value;
     const errorDiv = btnLogin.nextElementSibling;
 
-    if (arrUsers.length !== 0) {
+    data = await (await fetch('http://localhost:5000/api/users')).json();
+    if (data.length !== 0) {
         /* Using  'Array.prototype.some()' instead of 'forEach()'. 'some()' will return true immediately when it finds a
         matching user and will stop iterating through the array. Here's your code modified to use some(): */
-        let userFound = arrUsers.some(user => {
+        let userFound = data.some(user => {
             return userEmail === user.email && userPassword === user.password;
         });
 

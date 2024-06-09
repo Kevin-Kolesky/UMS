@@ -45,33 +45,28 @@ const form = document.getElementById('form');
   }
 
   const forms = document.querySelectorAll('.requires-validation');
-  //Array.from(forms): This converts the forms collection into a regular-array. 
-  //ForEach: It iterates over each form element and attaches an event listener to it.
-  //Inside the function, each form element is represented by the parameter form, which you can use to access properties and methods of that form.
   Array.from(forms).forEach(function (form) {
     form.addEventListener('submit', function (event) {
 
-      //event.preventDefault(): This method prevents the default behavior of an event. In this case, it prevents the default behavior of the form submission. If the form is not valid 
       event.preventDefault();
-      //event.stopPropagation(): This method stops the propagation of the current event in the capturing and bubbling phases. It's commonly used to prevent the event from reaching other elements or event handlers. In this context, it ensures that the event doesn't propagate further up the DOM tree, potentially triggering other event handlers or behaviors associated with ancestor elements.
+
       event.stopPropagation();
 
-
       let allFieldsValid = true;
-      //form.checkValidity(): This is a method available on HTML form elements. It checks the validity of the form according to its constraints, such as required fields, min and max values, and pattern matching. It returns true if the form is valid and false if it's not.
       if (!form.checkValidity()) {
-        
-        // Loop through each field/element in the form to check validity
+
         Array.from(form.elements).forEach(function (field) {
           if (field.type === 'password') {
+
             const passResult = passwordValidate(document.getElementById('password').value);
             const errorDiv = field.nextElementSibling;
+
             if (passResult) {
               field.classList.add('is-invalid');
+
               errorDiv.classList.add('invalid-feedback')
-              //Update the text content of the next sibling(ERROR DIV)
               errorDiv.textContent = passResult;
-              console.log('Password is NOT valid');
+
               allFieldsValid = false;
             } else {
               field.classList.remove('is-invalid');
@@ -79,16 +74,18 @@ const form = document.getElementById('form');
               errorDiv.textContent = 'Looks Good';
               errorDiv.classList.remove('invalid-feedback');
               errorDiv.classList.add('valid-feedback');
-              console.log('password valid')
             }
           } else if (!field.checkValidity()) {
-            //Add thje invalid class to the field that failed it's validation  
+
             field.classList.add('is-invalid');
-            //Update the text content of the next sibling(ERROR DIV)
+
             const errorDiv = field.nextElementSibling;
+
             errorDiv.classList.remove('valid-feedback');
             errorDiv.classList.add('invalid-feedback');
+
             allFieldsValid = false;
+
             if (field.validity.valueMissing) {
               errorDiv.textContent = 'This field is required.';
             } else if (field.type === 'email' && field.validity.typeMismatch) {
@@ -98,10 +95,11 @@ const form = document.getElementById('form');
             }
           } else {
             if (field.type !== 'submit' && field.type !== 'password') {
-              // Set field state to valid
               field.classList.remove('is-invalid');
               field.classList.add('is-valid');
+
               const errorDiv = field.nextElementSibling;
+
               errorDiv.textContent = 'Looks Good';
               errorDiv.classList.remove('invalid-feedback');
               errorDiv.classList.add('valid-feedback');
@@ -112,20 +110,22 @@ const form = document.getElementById('form');
       } else {
         Array.from(form.elements).forEach(function (field) {
           const errorDiv = field.nextElementSibling;
+
           if (field.type !== 'submit') {
-            // Set field state to valid
+
             field.classList.remove('is-invalid');
             field.classList.add('is-valid');
+
             errorDiv.classList.remove('invalid-feedback');
             errorDiv.classList.add('valid-feedback');
             errorDiv.textContent = 'Looks Good';
           }
         });
       }
-      console.log(allFieldsValid)
       if (allFieldsValid) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
         if (addUser()) {
+          console.log('going to dashboard now')
           window.location.href = "dashboard.html";
         };
       }
@@ -136,38 +136,46 @@ const form = document.getElementById('form');
 
 
 
-function addUser() {
-  let arrUsers = JSON.parse(localStorage.getItem('users')) || [];
-
+async function addUser() {
   let valState = false;
   let newUser = {
-    name: elUsername.value,
+    username: elUsername.value,
     email: elEmail.value,
     password: elPassword.value
-  };
+    };
 
-  if (arrUsers.length !== 0) {
-    arrUsers.forEach(user => {
-      if (user.email !== newUser.email && valState === false) {
-        valState = false;
+    data = await (await fetch('http://localhost:5000/api/users')).json();
+    if (data.length !== 0) {
+        data.forEach(user => {
+          if (user.email !== newUser.email && valState === false) {
+            valState = false;
+          } else {
+            valState = true;
+          }
+        });
       } else {
-        valState = true;
+        valState = false;
       }
-    });
-  } else {
-    valState = false;
-  }
 
+      if (valState) {
+        btnRegister.nextElementSibling.classList.remove('hidden');
+        return false;
+      } else {
+        btnRegister.nextElementSibling.classList.add('hidden');
+        //ADD new User
+       const response = await fetch('http://localhost:5000/api/post', {
+          method: 'POST',
+          headers:{
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newUser)
+        });
+        const result = await response.json();
+        console.log(result);
+        console.log('user added successfully')
+        return true;
+      }
+    };
 
-  if (valState) {
-    btnRegister.nextElementSibling.classList.remove('hidden');
-    return false;
-  } else {
-    btnRegister.nextElementSibling.classList.add('hidden');
-    arrUsers.push(newUser);
-    localStorage.setItem('users', JSON.stringify(arrUsers));
-    return true;
-  }
-}
 
 

@@ -57,7 +57,7 @@ const form = document.getElementById('form');
             if (allFieldsValid) {
                 event.preventDefault(); // Prevent default form submission
                 if (await checkUser()) {
-                    window.location.href = "dashboard.html";
+                 window.location.href = "dashboard.html";
                 };
             }
             form.classList.add('was-validated');
@@ -66,52 +66,33 @@ const form = document.getElementById('form');
 })();
 
 
-
 async function checkUser() {
 
     let userEmail = elEmail.value;
     let userPassword = elPassword.value;
     const errorDiv = btnLogin.nextElementSibling;
 
-    data = await (await fetch('http://localhost:5000/api/users')).json();
-    if (data.length !== 0) {
-        /* Using  'Array.prototype.some()' instead of 'forEach()'. 'some()' will return true immediately when it finds a
-        matching user and will stop iterating through the array. Here's your code modified to use some(): */
-        let userFound = data.some(user => {
-            return userEmail === user.email && userPassword === user.password;
+
+    try {
+        const response = await fetch('http://localhost:5000/api/userCheck', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: userEmail,
+                password: userPassword
+            })
         });
 
-        if (userFound) {
-            console.log(`User Found ${userEmail}`);
+        if (response.ok) {
             return true;
         } else {
             errorDiv.classList.remove('hidden');
-            console.log('User not found after loop');
             return false;
         }
-        /* In JavaScript, the return statement inside a forEach loop doesn't actually return a value from 
-        the outer function (checkUser in this case). Instead, it just exits the current iteration of the loop.
-
-        let valState = false;
-        arrUsers.forEach(user => {
-            if ((userEmail === user.email) && (userPassword === user.password)) {
-                console.log(`User Found ${userEmail}`);
-                return true;
-            }else
-            {
-                valState = true;
-            }
-        });
-
-        if (valState === true){
-            errorDiv.classList.remove('hidden');
-            console.log('User not found after loop');
-            return false;
-        }*/
-    } else {
+    } catch (error) {
         errorDiv.classList.remove('hidden');
-        console.log('User not found because array is empty');
         return false;
     }
-}
-
+} 

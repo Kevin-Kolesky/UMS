@@ -57,7 +57,6 @@ function deleteUser (index) {
         }
     })
     .then(data => {
-        console.log('User deleted:', data);
         displayusers();
     })
     .catch(error => console.error('Error deleting user:', error)); 

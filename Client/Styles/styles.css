@@ -60,3 +60,9 @@ thead, th{
     top: 0;
     position: sticky;
 }
+
+.masked {
+    color: transparent;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.5); /* Add a shadow to mask the text */
+    user-select: none; /* Prevent text selection */
+  }

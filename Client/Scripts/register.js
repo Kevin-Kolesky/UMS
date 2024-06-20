@@ -125,7 +125,6 @@ const form = document.getElementById('form');
       if (allFieldsValid) {
         event.preventDefault();
         if (await addUser()) {
-          console.log('going to dashboard now')
           window.location.href = "dashboard.html";
         };
       }
@@ -144,7 +143,16 @@ async function addUser() {
     password: elPassword.value
     };
 
-    data = await (await fetch('http://localhost:5000/api/users')).json();
+    try {
+      // Await the fetch call and then await the response.json() call separately
+      const response = await fetch('http://localhost:5000/api/users');
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+    const data = await response.json();
+    console.log(data)
     if (data.length !== 0) {
         data.forEach(user => {
           if (user.email !== newUser.email && valState === false) {
@@ -162,20 +170,21 @@ async function addUser() {
         return false;
       } else {
         btnRegister.nextElementSibling.classList.add('hidden');
+        
         //ADD new User
-       const response = await fetch('http://localhost:5000/api/post', {
+       let response = await fetch('http://localhost:5000/api/post', {
           method: 'POST',
           headers:{
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(newUser)
         });
-        const result = await response.json();
-        console.log(result);
-        console.log('user added successfully')
         return true;
       }
-    };
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
 
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
-
+const bcrypt = require('bcrypt');
 const cors = require("cors");
 
 const corsOptions = {
@@ -13,9 +13,6 @@ app.use(cors(corsOptions));
 
 const dotenv = require('dotenv');
 dotenv.config();
-
-
-
 
 // Create a MySQL connection
 const db = mysql.createConnection({
@@ -38,17 +35,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-app.post('/api/post', (req, res) => {
+app.post('/api/post', async (req, res) => {
     const {username,password, email } = req.body;
+    const hash = await bcrypt.hash(password, 13);
     const sql = 'INSERT INTO users (username,password, email) VALUES (?,?,?)';
-    db.query(sql, [username,password, email], (err, results) => {
+    db.query(sql, [username,hash, email], (err, results) => {
       if (err) {
         return res.status(500).send(err);
       }
       res.json({
         id: results.insertId,
         username,
-        password,
         email
       });
     });
@@ -65,6 +62,36 @@ app.get('/api/users', (req, res) => {
     });
   });
 
+app.post('/api/userCheck', (req, res) => {
+  const {password,email} = req.body;
+
+  const sql = 'SELECT password FROM users WHERE email=?';
+  db.query(sql,[email], async (err, result) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+
+    if (result.length === 0){
+      return res.status(404).send('email not found');
+    }
+
+     const data = JSON.parse(JSON.stringify(result));
+
+      try {
+        const match = await bcrypt.compare(password, data[0].password); 
+        
+        if (match){
+         return res.status(200).send(true);
+        }else{
+         return res.status(401).send(false);
+        } 
+      }
+      catch (error) {
+        return res.status(500).send(error.message);
+      }
+  });
+})
+
 app.get('/api/usersById', (req, res) => {
   const id = req.body;
   const sql = 'SELECT * FROM users WHERE id=?';
@@ -72,23 +99,19 @@ app.get('/api/usersById', (req, res) => {
     if (err) {
       return res.status(500).send(err);
     }else{
-      const data=JSON.parse(JSON.stringify(result));
-      console.log(data[0].id);
-      console.log(data[0].username);
-      console.log(data[0].password);
-      console.log(data[0].email);
-      res.json(result);
+      return res.json(result);
     }
   });
 });
 
 
-app.put('/api/update/:id', (req, res) => {
+app.put('/api/update/:id', async (req, res) => {
   const id=req.params.id;
   const {username,password, email } = req.body;
+  const hash = await bcrypt.hash(password, 13);
 
   const sql = 'UPDATE users SET username=?,password=?,email=? WHERE id=?;';
-  db.query(sql,[username,password,email,id],(err, result) => {
+  db.query(sql,[username,hash,email,id],(err, result) => {
     if (err) {
       return res.status(500).send(err);
     }else{

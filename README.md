@@ -3,12 +3,11 @@
 ## Phase 1
 
 ### Create HTML Pages:
-1. Create four HTML files: index.html, register.html, login.html, and
-   dashboard.html.
-  - index.html: Main page with options to login or register.
-  - register.html: User registration page with a form to input first name, last name, email, date of birth, username, and password.
-  - login.html: User login page with a form to input username and password.
-  - dashboard.html: Dashboard page to display registered user data in a table format.
+1. Create four HTML files: index.html, register.html, login.html, and dashboard.html.
+     - index.html: Main page with options to login or register.
+     - register.html: User registration page with a form to input first name, last name, email, date of birth, username, and password.
+     - login.html: User login page with a form to input username and password.
+     - dashboard.html: Dashboard page to display registered user data in a table format.
 
 ### Design CSS Styles:
 2. Create a styles.css file to define the styles for all HTML pages.

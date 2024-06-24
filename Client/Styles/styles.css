@@ -1,0 +1,68 @@
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-collapse {
+        display: flex !important;
+        flex-basis: auto;
+        flex-direction: row-reverse !important;
+    }
+}
+
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #6a11cb;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
+}
+
+.gradient-custom-dash {
+    /* fallback for old browsers */
+    background: #6a11cb;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgb(167, 94, 244), rgb(75, 115, 185))
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+.welcome {
+    margin-bottom: 0 !important;
+    display: flex;
+    align-content: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.redVal{
+    color: red;
+}
+
+.td {
+
+        white-space: normal !important; 
+        word-wrap: normal;  
+}        
+
+thead, th{
+    top: 0;
+    position: sticky;
+}
+
+.masked {
+    color: transparent;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.5); /* Add a shadow to mask the text */
+    user-select: none; /* Prevent text selection */
+  }

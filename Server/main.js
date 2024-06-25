@@ -14,10 +14,16 @@ app.use(cors(corsOptions));
 const dotenv = require('dotenv');
 dotenv.config();
 
+console.log(process.env.HOST)
+console.log('This is the user ' + process.env.DB_USER)
+console.log(process.env.PASSWORD)
+console.log(process.env.DATABASE)
+console.log(process.env.DB_PORT)
+
 // Create a MySQL connection
 const db = mysql.createConnection({
   host: process.env.HOST,
-  user: process.env.USER,
+  user: process.env.DB_USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
   port: process.env.DB_PORT
